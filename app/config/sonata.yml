@@ -1,0 +1,65 @@
+#SONATA MEDIA
+#sonata_media:
+    # if you don't use default namespace configuration
+    #class:
+    #    media: MyVendor\MediaBundle\Entity\Media
+    #    gallery: MyVendor\MediaBundle\Entity\Gallery
+    #    gallery_has_media: MyVendor\MediaBundle\Entity\GalleryHasMedia
+#    default_context: default
+#    db_driver: doctrine_orm # or doctrine_mongodb, doctrine_phpcr
+#    contexts:
+#        default:  # the default context is mandatory
+#            providers:
+#                - sonata.media.provider.image
+#                - sonata.media.provider.file
+#            formats:
+#                small: { width: 100 , quality: 70}
+#                big:   { width: 500 , quality: 70}
+#    cdn:
+#        server:
+#            path: /uploads/media
+#    filesystem:
+#        local:
+#            directory:  %kernel.root_dir%/../web/uploads/media
+#            create:     false
+#SONATA BLOCK
+sonata_intl:
+    timezone:
+        locales:
+            fr:    Europe/Paris
+sonata_core: ~
+sonata_user:
+    security_acl: true
+    manager_type: orm
+parameters:
+    sonata.user.admin.user.class: Application\Sonata\UserBundle\Admin\UserAdmin
+#    security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+    plafond_annuel: 840
+    anciennete_mini: 6
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.admin.block.search_result:
+            contexts:   [admin]
+        gestion.block.service.chart:  ~
+        gestion.block.service.timeline:  ~
+        gestion.block.service.button:  ~
+sonata_admin:
+    dashboard:
+        blocks:
+            - { position: left, type: sonata.admin.block.admin_list }
+            - { position: bottom, type: gestion.block.service.timeline , class: 'col-md-12' }
+#            - { position: center, type: gestion.block.service.tree }
+#            - { position: right, type: gestion.block.service.button }
+            - { position: right, type: gestion.block.service.chart ,settings: {chart:general} }
+    title:      "FENNECK"
+    title_logo: /img/logo_title.png
+    templates:
+#        dashboard: GestionCoreBundle:Core:dashboard.html.twig
+        layout:  ::standard_layout.html.twig
+    security:
+        handler: sonata.admin.security.handler.role
+

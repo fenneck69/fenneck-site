@@ -1,0 +1,57 @@
+parameters:
+#    gestion_core.example.class: Gestion\CoreBundle\Example
+
+services:
+#AGENCE
+   sonata.agence.admin:
+      class: Gestion\CoreBundle\Admin\AgenceAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: Reglages, icon: <span class='fa fa-gears'></span>, subicon: fa-users,label: Agences }
+      arguments: [null, Gestion\CoreBundle\Entity\Agence, GestionCoreBundle:AgenceAdmin]
+   gestion_core.admin.activite:
+        class: Gestion\CoreBundle\Admin\ActiviteAdmin
+        arguments: [~, Gestion\CoreBundle\Entity\Activite, GestionCoreBundle:ActiviteAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Reglages,  label: Activite}
+   gestion_core.admin.activite_type:
+        class: Gestion\CoreBundle\Admin\ActiviteTypeAdmin
+        arguments: [~, Gestion\CoreBundle\Entity\ActiviteType, GestionCoreBundle:ActiviteTypeAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Reglages, label: ActiviteType}
+   gestion_core.admin.famille:
+        class: Gestion\CoreBundle\Admin\FamilleAdmin
+        arguments: [~, Gestion\CoreBundle\Entity\Famille, GestionCoreBundle:FamilleAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Remboursements, icon: <span class='fa fa-briefcase'></span>, label: Familles}
+   gestion_core.admin.membre:
+        class: Gestion\CoreBundle\Admin\MembreAdmin
+        arguments: [~, Gestion\CoreBundle\Entity\Membre, GestionCoreBundle:MembreAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Remboursements, label: Membres}
+   gestion_core.admin.membre_type:
+        class: Gestion\CoreBundle\Admin\MembreTypeAdmin
+        arguments: [~, Gestion\CoreBundle\Entity\MembreType, GestionCoreBundle:MembreTypeAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Reglages, label: MembreType}
+   gestion_core.admin.quotient:
+        class: Gestion\CoreBundle\Admin\QuotientAdmin
+        arguments: [~, Gestion\CoreBundle\Entity\Quotient, GestionCoreBundle:QuotientAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Reglages, label: Quotient}
+   gestion_core.admin.remboursement:
+        class: Gestion\CoreBundle\Admin\RemboursementAdmin
+        arguments: [~, Gestion\CoreBundle\Entity\Remboursement, GestionCoreBundle:RemboursementAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Remboursements, label: Remboursement}
+#BLOCK
+   gestion.block.service.chart:
+      class: Gestion\CoreBundle\Block\ChartBlockService
+      tags:
+        - { name: sonata.block }
+      arguments: [gestion.block.service.chart,@templating,@service_container]
+
+   gestion.block.service.timeline:
+      class: Gestion\CoreBundle\Block\TimelineBlockService
+      tags:
+        - { name: sonata.block }
+      arguments: [gestion.block.service.timeline,@templating,@service_container]

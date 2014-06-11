@@ -1,0 +1,78 @@
+<link rel="stylesheet" type="text/css" href="/css/timeline.css">
+<script type="text/javascript" src="/js/timeline.js"></script>
+<script type="text/javascript" src="/js/storyjs-embed.js"></script>
+<script>
+    {% set hasAgenda=0 %}
+    var dataObject =
+    {
+        "timeline":
+        {
+            "headline":"Planning des remboursements",
+            "type":"default",
+            "text":"",
+            "date": [
+                {% for remboursement in remboursements %}
+                {% if remboursement.created %}
+                {
+                    {% set hasAgenda=1 %}
+                    "startDate":"{{ remboursement.created|date("Y,m,d") }}",
+                    "endDate":"{{ remboursement.created|date("Y,m,d") }}",
+                    "headline":"{{ remboursement.activite.nom }}<br/>{{ remboursement.membre.nom }} {{ remboursement.membre.prenom }}",
+                    "text":"<p><b>Montant activité :</b> {{ remboursement.prix|number_format(2) }} €<br/><b>Montant participation :</b> {{ remboursement.montantParticipation|number_format(2) }} € {% if remboursement.valide %}<span class='alert alert-success' style='text-transform:uppercase;'>Remboursé</span>{% else %}<span style='text-transform:uppercase;' class='alert alert-warning'>En attente de validation</span></p>{% endif %}",
+                    "asset":
+                    {
+                        "media":"<table class='table table-bordered'>" +
+                                "<tr>" +
+                                "<th class='text-center' colspan='2'>{{ remboursement.activite.nom }}</th><th class='text-center'>Paiement</th>" +
+                                "</tr>" +
+                                "<tr>" +
+                                "<td class='text-left'><strong>Nom : </strong></td>" +
+                                "<td><strong>{{ remboursement.membre.nom }} {{ remboursement.membre.prenom }}</strong></td>" +
+								{% if remboursement.valide %}
+								"<td class='text-center' rowspan='3' style='background-color:#dff0d8;color: #3c763d;vertical-align:middle;'><div class='glyphicon glyphicon-ok'></div></td>" +
+								{% else %}
+								"<td class='text-center' rowspan='3' style='background-color:#f2dede;color: #a94442;vertical-align:middle;'><div class='glyphicon glyphicon-remove'></div></td>" +
+								{% endif %}
+                                "</tr>" +
+                                "<tr>" +
+                                "<td class='text-left'><strong>Agence : </strong></td>" +
+                                "<td>{{ remboursement.membre.famille.agence.nom }}</td>" +
+                                "</tr>" +
+                                "<tr>" +
+                                "<td class='text-left'><strong>Participation : </strong></td>" +
+                                "<td>{{ remboursement.montantParticipation|number_format(2) }} €</td>" +
+                                "</tr>" +
+                                "</table>",
+                        "credit":"",
+                        "caption":""
+                    }
+                },
+                {% endif %}
+                {% endfor %}
+            ]
+        }
+    };
+    jQuery(document).ready(function() {
+        createStoryJS({
+            type:       'timeline',
+            width:      '100%',
+            height:     '380',
+            source:     dataObject,
+            embed_id:   'planning',
+			start_at_end:true, 
+            lang:        'fr'
+        });
+    });
+</script>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-calendar"></span> Les derniers remboursements</h3>
+            </div>
+            <div class="panel-body">
+                <div id="planning"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,273 @@
+{% block form %}
+    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
+
+    {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
+
+    {% if not admin.hasRoute(url)%}
+        <div>
+            {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
+        </div>
+    {% else %}
+        <form
+              {% if admin_pool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
+              role="form"
+              action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}" {{ form_enctype(form) }}
+              method="POST"
+              {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+              >
+            {% if form.vars.errors|length > 0 %}
+                <div class="sonata-ba-form-error alert alert-danger alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            {% block sonata_pre_fieldsets %}
+                <div class="row">
+            {% endblock %}
+
+            {% block sonata_tab_content %}
+                {% for name, form_group in admin.formgroups %}
+                    <div class="{{ form_group.class|default('col-md-8') }}">
+                        <div class="box box-success">
+                            <div class="box-header">
+                                <h4 class="box-title">
+                                    {{ admin.trans(name, {}, form_group.translation_domain) }}
+                                </h4>
+                            </div>
+                            {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
+                                <div class="box-body">
+                                    <div class="sonata-ba-collapsed-fields">
+                                        {% if form_group.description != false %}
+                                            <p>{{ form_group.description|raw }}</p>
+                                        {% endif %}
+
+                                        {% for field_name in form_group.fields %}
+                                            {% if admin.formfielddescriptions[field_name] is defined %}
+                                                {{ form_row(form[field_name])}}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {#</div>#}
+                        </div>
+                    </div>
+                {% endfor %}
+				<div class="col-md-4">
+                        <div class="box box-warning">
+                            <div class="box-header">
+                                <h4 class="box-title">
+                                   Montant du remboursement
+                                </h4>
+                            </div>
+                            <script type="text/javascript">
+						
+							 $(document).ready(function($) {
+						
+							var montantUniquePlein = 0;
+							var montantUniqueRemboursement = 0;
+							var tauxEnCours = 0;
+							var vacEnCours = 0;
+							
+								/* ON LES VALEURS PAR DEFAUT DE LUGC */
+								$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+								changeMontant($('#tarifUgc').val(), ($('#tarifUgc').val()-$('#reducUgc').val()));
+								
+								
+								function changeMontant(prixplein, prixremb,taux){
+								//alert(prixplein.toFixed(2));
+									montantUniquePlein = Number(prixplein).toFixed(2);
+									montantUniqueRemboursement = Number(prixremb).toFixed(2);
+									$('#montantCE').html(Number(montantUniqueRemboursement*$('.qteRemb').val()).toFixed(2));
+									if(!taux){
+							
+									$('.prixRemb').val(Number(montantUniquePlein*$('.qteRemb').val()).toFixed(2));
+									}
+								}
+								
+								
+								function calculReducTaux(montantplein,plafon,taux){
+								resultat = Number((taux/100)*montantplein).toFixed(2);
+								
+									if(Number(resultat) > Number(plafon)){
+										resultat = plafon;
+									}
+								
+								return resultat;
+								}
+								
+								function calculVacances(){
+									membreEncours = $('.listMembre').select2('data').id;
+									$.get('{{ path('admin_gestion_core_remboursement_precalc')}}?membre='+membreEncours, function( data ) {
+										$('#montantCE').html(Number(data).toFixed(2));
+									});
+								}
+								
+								$('.listMembre').change(function(){
+									if(!!vacEnCours){
+										calculVacances();
+									}
+								});
+								
+								$('.prixRemb').on('input', function() {
+									if(!!tauxEnCours){
+										switch(tauxEnCours) {
+										case "sport":
+											changeMontant($(this).val(),calculReducTaux($(this).val(),$('#limitSport').val(),$('#pourcentSport').val()),true);
+											break;
+										case "spectacle":
+											changeMontant($(this).val(),calculReducTaux($(this).val(),$('#limitSpectacle').val(),$('#pourcentSpectacle').val())*$('.qteRemb').val(),true);
+											break;	
+										}
+										
+									}
+
+								});
+								
+								
+								$('.listActivite').change(function(){
+
+									switch($(this).val()) {
+										case "1"://UGC
+											tauxEnCours = 0;
+											vacEnCours = 0;
+											$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+											$('.qteRemb').parent('.sonata-ba-field').parent('.form-group').show();
+											changeMontant($('#tarifUgc').val(), ($('#tarifUgc').val()-$('#reducUgc').val()));
+											break;
+										case "2"://CGR
+											tauxEnCours = 0;
+											vacEnCours = 0;
+											$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+											$('.qteRemb').parent('.sonata-ba-field').parent('.form-group').show();
+											changeMontant($('#tarifCGR').val(), ($('#tarifCGR').val()-$('#reducCGR').val()));
+											break;
+										case "3"://PATHE
+											tauxEnCours = 0;
+											vacEnCours = 0;
+											$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+											$('.qteRemb').parent('.sonata-ba-field').parent('.form-group').show();
+											changeMontant($('#tarifPathe').val(), ($('#tarifPathe').val()-$('#reducPathe').val()));
+											break;
+										case "4"://Cheque Lire/multimedia
+											tauxEnCours = 0;
+											vacEnCours = 0;
+											$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+											$('.qteRemb').parent('.sonata-ba-field').parent('.form-group').show();
+											changeMontant($('#tarifMulti').val(), ($('#tarifMulti').val()-$('#reducMulti').val()));
+											break;
+										case "5"://Abonnement sportif
+											tauxEnCours = "sport";
+											vacEnCours = 0;
+											$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').show();
+											$('.qteRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+											$('.qteRemb').val(1);
+											changeMontant($('.prixRemb').val(),calculReducTaux($('.prixRemb').val(),$('#limitSport').val(),$('#pourcentSport').val()));
+											break;
+										case "6"://Spectacle
+											tauxEnCours = "spectacle";
+											vacEnCours = 0;
+											$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').show();
+											$('.qteRemb').val(1);
+											$('.qteRemb').parent('.sonata-ba-field').parent('.form-group').show();
+											changeMontant($('.prixRemb').val(),calculReducTaux($('.prixRemb').val(),$('#limitSpectacle').val(),$('#pourcentSpectacle').val()));
+											break;
+										case "7"://Cheques vacances
+											tauxEnCours = 0;
+											vacEnCours = 1;
+											$('.prixRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+											$('.prixRemb').val(1);
+											$('.qteRemb').parent('.sonata-ba-field').parent('.form-group').hide();
+											$('.qteRemb').val(1);
+											calculVacances();
+											break;
+										}
+								});
+								$('.qteRemb').on('input', function() {
+									changeMontant(montantUniquePlein,montantUniqueRemboursement)
+								});
+						 });
+						 
+						 
+						 
+						 
+							</script>
+                                <div class="box-body">
+                                    <div class="sonata-ba-collapsed-fields">
+										<h3 class="label label-warning" style="font-size:25px; "><span id="montantCE">0</span>&nbsp;<span class="glyphicon glyphicon-euro"></span></h3><br/>
+										<input type="hidden" id="tarifUgc" value="{{ cinemaUGC.prixPlein|number_format(2) }}" />
+										<input type="hidden" id="tarifCGR" value="{{ cinemaCGR.prixPlein|number_format(2) }}" />
+										<input type="hidden" id="tarifPathe" value="{{ cinemaPATHE.prixPlein|number_format(2) }}" />
+										<input type="hidden" id="reducUgc" value="{{ cinemaUGC.prixReduit|number_format(2) }}" />
+										<input type="hidden" id="reducCGR" value="{{ cinemaCGR.prixReduit|number_format(2) }}" />
+										<input type="hidden" id="reducPathe" value="{{ cinemaPATHE.prixReduit|number_format(2) }}" />
+										
+										<input type="hidden" id="tarifMulti" value="{{ chequeLire.prixPlein|number_format(2) }}" />
+										<input type="hidden" id="reducMulti" value="{{ chequeLire.prixReduit|number_format(2) }}" />
+										
+										<input type="hidden" id="pourcentSport" value="{{ aboSport.taux|number_format(2) }}" />
+										<input type="hidden" id="limitSport" value="{{ aboSport.plafond|number_format(2) }}" />
+										
+										<input type="hidden" id="pourcentSpectacle" value="{{ aboSpectacle.taux|number_format(2) }}" />
+										<input type="hidden" id="limitSpectacle" value="{{ aboSpectacle.plafond|number_format(2) }}" />
+								
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+            {% endblock %}
+
+            {% block sonata_post_fieldsets %}
+                </div>
+            {% endblock %}
+
+            {{ form_rest(form) }}
+
+            {% block formactions %}
+                <div class="well well-small form-actions">
+                    {% if app.request.isxmlhttprequest %}
+                        {% if admin.id(object) is not null %}
+                            <button type="submit" class="btn btn-success" name="btn_update"><i class="fa fa-save"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-success" name="btn_create"><i class="fa fa-plus-circle"></i> {{ 'btn_create'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    {% else %}
+                        {% if admin.supportsPreviewMode %}
+                            <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
+                                <i class="fa fa-eye"></i>
+                                {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
+                        {% if admin.id(object) is not null %}
+                            <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+
+                            {% if admin.hasroute('list') %}
+                                <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fa fa-save"></i> <i class="fa fa-list"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+
+                            {% if admin.hasroute('delete') and admin.isGranted('DELETE', object) %}
+                                {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+                                <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}"><i class="fa fa-minus-circle"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}</a>
+                            {% endif %}
+
+                            {% if admin.isAclEnabled() and admin.hasroute('acl') and admin.isGranted('MASTER', object) %}
+                                <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fa fa-users"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+                            {% endif %}
+                        {% else %}
+                            {% if admin.hasroute('edit') %}
+                                <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fa fa-save"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+                            {% if admin.hasroute('list') %}
+                                <button type="submit" class="btn btn-success" name="btn_create_and_list"><i class="fa fa-save"></i> <i class="fa fa-list"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+                            <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fa fa-plus-circle"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endblock formactions %}
+        </form>
+    {% endif%}
+
+    {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
+
+{% endblock %}
