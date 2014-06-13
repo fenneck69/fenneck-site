@@ -1,0 +1,26 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{asset('bundles/vincetbootstrapform/bootstrap-datepicker/css/datepicker.css')}}">
+    <link rel="stylesheet" href="{{ asset('bundles/thracemedia/css/base.css') }}" />
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('bundles/vincetbootstrapform/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+    <script src="{{asset('bundles/vincetbootstrapform/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js')}}"></script>
+    <script src="{{asset('bundles/vincetbootstrapform/js/bootstrap-forms.js')}}"></script>
+    <script src="{{ asset('js/plupload/moxie.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/plupload/plupload.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/thracemedia/js/file-upload.js') }}" type="text/javascript"></script>
+{% endblock %}
+ {% block logo %}
+     <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
+         <img src="{{ asset(admin_pool.titlelogo) }}" alt="">
+         {{ admin_pool.title }}
+     </a>
+ {% endblock %}
+ {% block side_bar_after_nav %}
+
+ {% endblock %}
+

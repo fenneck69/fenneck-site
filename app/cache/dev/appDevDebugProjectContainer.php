@@ -154,6 +154,7 @@ class appDevDebugProjectContainer extends Container
             'gestion_core.admin.activite' => 'getGestionCore_Admin_ActiviteService',
             'gestion_core.admin.activite_type' => 'getGestionCore_Admin_ActiviteTypeService',
             'gestion_core.admin.famille' => 'getGestionCore_Admin_FamilleService',
+            'gestion_core.admin.gallerie' => 'getGestionCore_Admin_GallerieService',
             'gestion_core.admin.membre' => 'getGestionCore_Admin_MembreService',
             'gestion_core.admin.membre_type' => 'getGestionCore_Admin_MembreTypeService',
             'gestion_core.admin.quotient' => 'getGestionCore_Admin_QuotientService',
@@ -2266,6 +2267,41 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'gestion_core.admin.gallerie' service.
+     *
+     * @return Gestion\CoreBundle\Admin\GallerieAdmin A Gestion\CoreBundle\Admin\GallerieAdmin instance.
+     */
+    protected function getGestionCore_Admin_GallerieService()
+    {
+        $instance = new \Gestion\CoreBundle\Admin\GallerieAdmin('gestion_core.admin.gallerie', 'Gestion\\CoreBundle\\Entity\\Gallerie', 'GestionCoreBundle:GallerieAdmin');
+
+        $instance->setFormTheme(array(0 => 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig'));
+        $instance->setFilterTheme(array(0 => 'SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig'));
+        $instance->setManagerType('orm');
+        $instance->setModelManager($this->get('sonata.admin.manager.orm'));
+        $instance->setFormContractor($this->get('sonata.admin.builder.orm_form'));
+        $instance->setShowBuilder($this->get('sonata.admin.builder.orm_show'));
+        $instance->setListBuilder($this->get('sonata.admin.builder.orm_list'));
+        $instance->setDatagridBuilder($this->get('sonata.admin.builder.orm_datagrid'));
+        $instance->setTranslator($this->get('translator.default'));
+        $instance->setConfigurationPool($this->get('sonata.admin.pool'));
+        $instance->setRouteGenerator($this->get('sonata.admin.route.default_generator'));
+        $instance->setValidator($this->get('validator'));
+        $instance->setSecurityHandler($this->get('sonata.admin.security.handler'));
+        $instance->setMenuFactory($this->get('knp_menu.factory'));
+        $instance->setRouteBuilder($this->get('sonata.admin.route.path_info'));
+        $instance->setLabelTranslatorStrategy($this->get('sonata.admin.label.strategy.native'));
+        $instance->setLabel('Galleries');
+        $instance->setPersistFilters(false);
+        $instance->setTemplates(array('user_block' => 'SonataUserBundle:Admin/Core:user_block.html.twig', 'add_block' => 'SonataAdminBundle:Core:add_block.html.twig', 'layout' => '::standard_layout.html.twig', 'ajax' => 'SonataAdminBundle::ajax_layout.html.twig', 'dashboard' => 'SonataAdminBundle:Core:dashboard.html.twig', 'list' => 'SonataAdminBundle:CRUD:list.html.twig', 'filter' => 'SonataAdminBundle:Form:filter_admin_fields.html.twig', 'show' => 'SonataAdminBundle:CRUD:show.html.twig', 'edit' => 'SonataAdminBundle:CRUD:edit.html.twig', 'history' => 'SonataAdminBundle:CRUD:history.html.twig', 'history_revision_timestamp' => 'SonataIntlBundle:CRUD:history_revision_timestamp.html.twig', 'acl' => 'SonataAdminBundle:CRUD:acl.html.twig', 'action' => 'SonataAdminBundle:CRUD:action.html.twig', 'short_object_description' => 'SonataAdminBundle:Helper:short-object-description.html.twig', 'preview' => 'SonataAdminBundle:CRUD:preview.html.twig', 'list_block' => 'SonataAdminBundle:Block:block_admin_list.html.twig', 'delete' => 'SonataAdminBundle:CRUD:delete.html.twig', 'batch' => 'SonataAdminBundle:CRUD:list__batch.html.twig', 'select' => 'SonataAdminBundle:CRUD:list__select.html.twig', 'batch_confirmation' => 'SonataAdminBundle:CRUD:batch_confirmation.html.twig', 'inner_list_row' => 'SonataAdminBundle:CRUD:list_inner_row.html.twig', 'base_list_field' => 'SonataAdminBundle:CRUD:base_list_field.html.twig', 'pager_links' => 'SonataAdminBundle:Pager:links.html.twig', 'pager_results' => 'SonataAdminBundle:Pager:results.html.twig', 'search' => 'SonataAdminBundle:Core:search.html.twig', 'search_result_block' => 'SonataAdminBundle:Block:block_search_result.html.twig'));
+        $instance->setSecurityInformation(array('EDIT' => array(0 => 'EDIT'), 'LIST' => array(0 => 'LIST'), 'CREATE' => array(0 => 'CREATE'), 'VIEW' => array(0 => 'VIEW'), 'DELETE' => array(0 => 'DELETE'), 'EXPORT' => array(0 => 'EXPORT'), 'OPERATOR' => array(0 => 'OPERATOR'), 'MASTER' => array(0 => 'MASTER')));
+        $instance->initialize();
+        $instance->addExtension($this->get('mr_green_stuff_acl_sonata_admin_extension.acl.extension'));
+
+        return $instance;
+    }
+
+    /**
      * Gets the 'gestion_core.admin.membre' service.
      *
      * @return Gestion\CoreBundle\Admin\MembreAdmin A Gestion\CoreBundle\Admin\MembreAdmin instance.
@@ -2956,7 +2992,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getLocaleListenerService()
     {
-        return $this->services['locale_listener'] = new \Symfony\Component\HttpKernel\EventListener\LocaleListener('en', $this->get('router', ContainerInterface::NULL_ON_INVALID_REFERENCE), $this->get('request_stack'));
+        return $this->services['locale_listener'] = new \Symfony\Component\HttpKernel\EventListener\LocaleListener('fr', $this->get('router', ContainerInterface::NULL_ON_INVALID_REFERENCE), $this->get('request_stack'));
     }
 
     /**
@@ -3591,7 +3627,7 @@ class appDevDebugProjectContainer extends Container
         $n = new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler($l, array('login_path' => '/login', 'always_use_default_target_path' => false, 'default_target_path' => '/', 'target_path_parameter' => '_target_path', 'use_referer' => false));
         $n->setProviderKey('main');
 
-        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($k, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username_email')), 'user', $a, $c), 2 => $m, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $l, 'main', $n, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($e, $l, array('login_path' => '/login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('use_forward' => false, 'check_path' => '/login_check', 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c, NULL), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '539870e2e7f20', $a), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $k, $f)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $l, 'main', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $l, '/login', false), NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($k, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username_email')), 'user', $a, $c), 2 => $m, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $l, 'main', $n, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($e, $l, array('login_path' => '/login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('use_forward' => false, 'check_path' => '/login_check', 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c, NULL), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '539b13b9ce57d', $a), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $k, $f)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $l, 'main', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $l, '/login', false), NULL, NULL, $a));
     }
 
     /**
@@ -4525,9 +4561,9 @@ class appDevDebugProjectContainer extends Container
         $this->services['sonata.admin.pool'] = $instance = new \Sonata\AdminBundle\Admin\Pool($this, 'FENNECK', '/img/logo_title.png', array('html5_validate' => true, 'confirm_exit' => true, 'use_select2' => true, 'use_icheck' => true, 'pager_links' => NULL, 'form_type' => 'standard', 'dropdown_number_groups_per_colums' => 2, 'title_mode' => 'both', 'javascripts' => array(0 => 'bundles/sonataadmin/vendor/jquery/dist/jquery.min.js', 1 => 'bundles/sonatacore/vendor/moment/min/moment.min.js', 2 => 'bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js', 3 => 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js', 4 => 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js', 5 => 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js', 6 => 'bundles/sonataadmin/jquery/jquery.form.js', 7 => 'bundles/sonataadmin/jquery/jquery.confirmExit.js', 8 => 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js', 9 => 'bundles/sonataadmin/vendor/select2/select2.min.js', 10 => 'bundles/sonataadmin/App.js', 11 => 'bundles/sonataadmin/Admin.js'), 'stylesheets' => array(0 => 'bundles/sonataadmin/vendor/bootstrap/dist/css/bootstrap.min.css', 1 => 'bundles/sonataadmin/vendor/AdminLTE/css/font-awesome.min.css', 2 => 'bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css', 3 => 'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css', 4 => 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css', 5 => 'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css', 6 => 'bundles/sonataadmin/vendor/select2/select2.css', 7 => 'bundles/sonataadmin/vendor/select2/select2-bootstrap.css', 8 => 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css', 9 => 'bundles/sonataadmin/css/styles.css', 10 => 'bundles/sonataadmin/css/layout.css')), array());
 
         $instance->setTemplates(array('history_revision_timestamp' => 'SonataIntlBundle:CRUD:history_revision_timestamp.html.twig', 'user_block' => 'SonataUserBundle:Admin/Core:user_block.html.twig', 'layout' => '::standard_layout.html.twig', 'add_block' => 'SonataAdminBundle:Core:add_block.html.twig', 'ajax' => 'SonataAdminBundle::ajax_layout.html.twig', 'dashboard' => 'SonataAdminBundle:Core:dashboard.html.twig', 'search' => 'SonataAdminBundle:Core:search.html.twig', 'list' => 'SonataAdminBundle:CRUD:list.html.twig', 'filter' => 'SonataAdminBundle:Form:filter_admin_fields.html.twig', 'show' => 'SonataAdminBundle:CRUD:show.html.twig', 'edit' => 'SonataAdminBundle:CRUD:edit.html.twig', 'preview' => 'SonataAdminBundle:CRUD:preview.html.twig', 'history' => 'SonataAdminBundle:CRUD:history.html.twig', 'acl' => 'SonataAdminBundle:CRUD:acl.html.twig', 'action' => 'SonataAdminBundle:CRUD:action.html.twig', 'select' => 'SonataAdminBundle:CRUD:list__select.html.twig', 'list_block' => 'SonataAdminBundle:Block:block_admin_list.html.twig', 'search_result_block' => 'SonataAdminBundle:Block:block_search_result.html.twig', 'short_object_description' => 'SonataAdminBundle:Helper:short-object-description.html.twig', 'delete' => 'SonataAdminBundle:CRUD:delete.html.twig', 'batch' => 'SonataAdminBundle:CRUD:list__batch.html.twig', 'batch_confirmation' => 'SonataAdminBundle:CRUD:batch_confirmation.html.twig', 'inner_list_row' => 'SonataAdminBundle:CRUD:list_inner_row.html.twig', 'base_list_field' => 'SonataAdminBundle:CRUD:base_list_field.html.twig', 'pager_links' => 'SonataAdminBundle:Pager:links.html.twig', 'pager_results' => 'SonataAdminBundle:Pager:results.html.twig'));
-        $instance->setAdminServiceIds(array(0 => 'sonata.user.admin.user', 1 => 'sonata.user.admin.group', 2 => 'sonata.agence.admin', 3 => 'gestion_core.admin.activite', 4 => 'gestion_core.admin.activite_type', 5 => 'gestion_core.admin.famille', 6 => 'gestion_core.admin.membre', 7 => 'gestion_core.admin.membre_type', 8 => 'gestion_core.admin.quotient', 9 => 'gestion_core.admin.remboursement'));
-        $instance->setAdminGroups(array('sonata_user' => array('label' => 'sonata_user', 'label_catalogue' => 'SonataUserBundle', 'icon' => '<i class="fa fa-folder"></i>', 'roles' => array(), 'items' => array(0 => 'sonata.user.admin.user', 1 => 'sonata.user.admin.group')), 'Reglages' => array('label' => 'Reglages', 'label_catalogue' => 'SonataAdminBundle', 'icon' => '<span class=\'fa fa-gears\'></span>', 'roles' => array(), 'items' => array(0 => 'sonata.agence.admin', 1 => 'gestion_core.admin.activite', 2 => 'gestion_core.admin.activite_type', 3 => 'gestion_core.admin.membre_type', 4 => 'gestion_core.admin.quotient')), 'Remboursements' => array('label' => 'Remboursements', 'label_catalogue' => 'SonataAdminBundle', 'icon' => '<span class=\'fa fa-briefcase\'></span>', 'roles' => array(), 'items' => array(0 => 'gestion_core.admin.famille', 1 => 'gestion_core.admin.membre', 2 => 'gestion_core.admin.remboursement'))));
-        $instance->setAdminClasses(array('Application\\Sonata\\UserBundle\\Entity\\User' => array(0 => 'sonata.user.admin.user'), 'Application\\Sonata\\UserBundle\\Entity\\Group' => array(0 => 'sonata.user.admin.group'), 'Gestion\\CoreBundle\\Entity\\Agence' => array(0 => 'sonata.agence.admin'), 'Gestion\\CoreBundle\\Entity\\Activite' => array(0 => 'gestion_core.admin.activite'), 'Gestion\\CoreBundle\\Entity\\ActiviteType' => array(0 => 'gestion_core.admin.activite_type'), 'Gestion\\CoreBundle\\Entity\\Famille' => array(0 => 'gestion_core.admin.famille'), 'Gestion\\CoreBundle\\Entity\\Membre' => array(0 => 'gestion_core.admin.membre'), 'Gestion\\CoreBundle\\Entity\\MembreType' => array(0 => 'gestion_core.admin.membre_type'), 'Gestion\\CoreBundle\\Entity\\Quotient' => array(0 => 'gestion_core.admin.quotient'), 'Gestion\\CoreBundle\\Entity\\Remboursement' => array(0 => 'gestion_core.admin.remboursement')));
+        $instance->setAdminServiceIds(array(0 => 'sonata.user.admin.user', 1 => 'sonata.user.admin.group', 2 => 'sonata.agence.admin', 3 => 'gestion_core.admin.activite', 4 => 'gestion_core.admin.activite_type', 5 => 'gestion_core.admin.famille', 6 => 'gestion_core.admin.membre', 7 => 'gestion_core.admin.gallerie', 8 => 'gestion_core.admin.membre_type', 9 => 'gestion_core.admin.quotient', 10 => 'gestion_core.admin.remboursement'));
+        $instance->setAdminGroups(array('sonata_user' => array('label' => 'sonata_user', 'label_catalogue' => 'SonataUserBundle', 'icon' => '<i class="fa fa-folder"></i>', 'roles' => array(), 'items' => array(0 => 'sonata.user.admin.user', 1 => 'sonata.user.admin.group')), 'Reglages' => array('label' => 'Reglages', 'label_catalogue' => 'SonataAdminBundle', 'icon' => '<span class=\'fa fa-gears\'></span>', 'roles' => array(), 'items' => array(0 => 'sonata.agence.admin', 1 => 'gestion_core.admin.activite', 2 => 'gestion_core.admin.activite_type', 3 => 'gestion_core.admin.membre_type', 4 => 'gestion_core.admin.quotient')), 'Remboursements' => array('label' => 'Remboursements', 'label_catalogue' => 'SonataAdminBundle', 'icon' => '<span class=\'fa fa-briefcase\'></span>', 'roles' => array(), 'items' => array(0 => 'gestion_core.admin.famille', 1 => 'gestion_core.admin.membre', 2 => 'gestion_core.admin.gallerie', 3 => 'gestion_core.admin.remboursement'))));
+        $instance->setAdminClasses(array('Application\\Sonata\\UserBundle\\Entity\\User' => array(0 => 'sonata.user.admin.user'), 'Application\\Sonata\\UserBundle\\Entity\\Group' => array(0 => 'sonata.user.admin.group'), 'Gestion\\CoreBundle\\Entity\\Agence' => array(0 => 'sonata.agence.admin'), 'Gestion\\CoreBundle\\Entity\\Activite' => array(0 => 'gestion_core.admin.activite'), 'Gestion\\CoreBundle\\Entity\\ActiviteType' => array(0 => 'gestion_core.admin.activite_type'), 'Gestion\\CoreBundle\\Entity\\Famille' => array(0 => 'gestion_core.admin.famille'), 'Gestion\\CoreBundle\\Entity\\Membre' => array(0 => 'gestion_core.admin.membre'), 'Gestion\\CoreBundle\\Entity\\Gallerie' => array(0 => 'gestion_core.admin.gallerie'), 'Gestion\\CoreBundle\\Entity\\MembreType' => array(0 => 'gestion_core.admin.membre_type'), 'Gestion\\CoreBundle\\Entity\\Quotient' => array(0 => 'gestion_core.admin.quotient'), 'Gestion\\CoreBundle\\Entity\\Remboursement' => array(0 => 'gestion_core.admin.remboursement')));
 
         return $instance;
     }
@@ -4607,7 +4643,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSonata_Admin_RouteLoaderService()
     {
-        return $this->services['sonata.admin.route_loader'] = new \Sonata\AdminBundle\Route\AdminPoolLoader($this->get('sonata.admin.pool'), array(0 => 'sonata.user.admin.user', 1 => 'sonata.user.admin.group', 2 => 'sonata.agence.admin', 3 => 'gestion_core.admin.activite', 4 => 'gestion_core.admin.activite_type', 5 => 'gestion_core.admin.famille', 6 => 'gestion_core.admin.membre', 7 => 'gestion_core.admin.membre_type', 8 => 'gestion_core.admin.quotient', 9 => 'gestion_core.admin.remboursement'), $this);
+        return $this->services['sonata.admin.route_loader'] = new \Sonata\AdminBundle\Route\AdminPoolLoader($this->get('sonata.admin.pool'), array(0 => 'sonata.user.admin.user', 1 => 'sonata.user.admin.group', 2 => 'sonata.agence.admin', 3 => 'gestion_core.admin.activite', 4 => 'gestion_core.admin.activite_type', 5 => 'gestion_core.admin.famille', 6 => 'gestion_core.admin.membre', 7 => 'gestion_core.admin.gallerie', 8 => 'gestion_core.admin.membre_type', 9 => 'gestion_core.admin.quotient', 10 => 'gestion_core.admin.remboursement'), $this);
     }
 
     /**
@@ -5322,7 +5358,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSonata_Intl_LocaleDetector_RequestService()
     {
-        return $this->services['sonata.intl.locale_detector.request'] = new \Sonata\IntlBundle\Locale\RequestDetector($this, 'en');
+        return $this->services['sonata.intl.locale_detector.request'] = new \Sonata\IntlBundle\Locale\RequestDetector($this, 'fr');
     }
 
     /**
@@ -7177,7 +7213,7 @@ class appDevDebugProjectContainer extends Container
     {
         $this->services['translator.default'] = $instance = new \Symfony\Bundle\FrameworkBundle\Translation\Translator($this, new \Symfony\Component\Translation\MessageSelector(), array('translation.loader.php' => array(0 => 'php'), 'translation.loader.yml' => array(0 => 'yml'), 'translation.loader.xliff' => array(0 => 'xlf', 1 => 'xliff'), 'translation.loader.po' => array(0 => 'po'), 'translation.loader.mo' => array(0 => 'mo'), 'translation.loader.qt' => array(0 => 'ts'), 'translation.loader.csv' => array(0 => 'csv'), 'translation.loader.res' => array(0 => 'res'), 'translation.loader.dat' => array(0 => 'dat'), 'translation.loader.ini' => array(0 => 'ini'), 'translation.loader.json' => array(0 => 'json')), array('cache_dir' => 'C:/wamp/www/fenneck-site/app/cache/dev/translations', 'debug' => true));
 
-        $instance->setFallbackLocales(array(0 => 'en'));
+        $instance->setFallbackLocales(array(0 => 'fr'));
         $instance->addResource('xlf', 'C:\\wamp\\www\\fenneck-site\\vendor\\symfony\\symfony\\src\\Symfony\\Component\\Validator/Resources/translations\\validators.af.xlf', 'af', 'validators');
         $instance->addResource('xlf', 'C:\\wamp\\www\\fenneck-site\\vendor\\symfony\\symfony\\src\\Symfony\\Component\\Validator/Resources/translations\\validators.ar.xlf', 'ar', 'validators');
         $instance->addResource('xlf', 'C:\\wamp\\www\\fenneck-site\\vendor\\symfony\\symfony\\src\\Symfony\\Component\\Validator/Resources/translations\\validators.bg.xlf', 'bg', 'validators');
@@ -7378,6 +7414,7 @@ class appDevDebugProjectContainer extends Container
         $instance->addResource('xliff', 'C:\\wamp\\www\\fenneck-site\\vendor\\sonata-project\\admin-bundle/Resources/translations\\SonataAdminBundle.sl.xliff', 'sl', 'SonataAdminBundle');
         $instance->addResource('xliff', 'C:\\wamp\\www\\fenneck-site\\vendor\\sonata-project\\admin-bundle/Resources/translations\\SonataAdminBundle.uk.xliff', 'uk', 'SonataAdminBundle');
         $instance->addResource('xliff', 'C:\\wamp\\www\\fenneck-site\\vendor\\sonata-project\\admin-bundle/Resources/translations\\SonataAdminBundle.zh_CN.xliff', 'zh_CN', 'SonataAdminBundle');
+        $instance->addResource('xliff', 'C:/wamp/www/fenneck-site/app/Resources/SonataAdminBundle/translations\\SonataAdminBundle.fr.xliff', 'fr', 'SonataAdminBundle');
         $instance->addResource('xliff', 'C:\\wamp\\www\\fenneck-site\\vendor\\sonata-project\\core-bundle/Resources/translations\\SonataCoreBundle.bg.xliff', 'bg', 'SonataCoreBundle');
         $instance->addResource('xliff', 'C:\\wamp\\www\\fenneck-site\\vendor\\sonata-project\\core-bundle/Resources/translations\\SonataCoreBundle.ca.xliff', 'ca', 'SonataCoreBundle');
         $instance->addResource('xliff', 'C:\\wamp\\www\\fenneck-site\\vendor\\sonata-project\\core-bundle/Resources/translations\\SonataCoreBundle.cs.xliff', 'cs', 'SonataCoreBundle');
@@ -7429,6 +7466,9 @@ class appDevDebugProjectContainer extends Container
         $instance->addResource('yml', 'C:\\wamp\\www\\fenneck-site\\vendor\\mrgreenstuff\\bootstrap-form-bundle\\VinceT\\BootstrapFormBundle/Resources/translations\\VinceTBootstrapFormBundle.es.yml', 'es', 'VinceTBootstrapFormBundle');
         $instance->addResource('yml', 'C:\\wamp\\www\\fenneck-site\\vendor\\mrgreenstuff\\bootstrap-form-bundle\\VinceT\\BootstrapFormBundle/Resources/translations\\VinceTBootstrapFormBundle.fr.yml', 'fr', 'VinceTBootstrapFormBundle');
         $instance->addResource('xlf', 'C:\\wamp\\www\\fenneck-site\\src\\Gestion\\CoreBundle/Resources/translations\\messages.fr.xlf', 'fr', 'messages');
+        $instance->addResource('xliff', 'C:/wamp/www/fenneck-site/app/Resources/translations\\SonataAdminBundle.fr.xliff', 'fr', 'SonataAdminBundle');
+        $instance->addResource('xliff', 'C:/wamp/www/fenneck-site/app/Resources/translations\\SonataUserBundle.fr.xliff', 'fr', 'SonataUserBundle');
+        $instance->addResource('xlf', 'C:/wamp/www/fenneck-site/app/Resources/translations\\ThraceMediaBundle.fr.xlf', 'fr', 'ThraceMediaBundle');
 
         return $instance;
     }
@@ -7686,7 +7726,7 @@ class appDevDebugProjectContainer extends Container
     {
         $this->services['vincet.bootstrapform.form.type.datepicker'] = $instance = new \VinceT\BootstrapFormBundle\Form\Type\DatePickerType();
 
-        $instance->setLocale('en');
+        $instance->setLocale('fr');
 
         return $instance;
     }
@@ -8033,7 +8073,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username_email'), $this->get('security.user_checker'), 'main', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('539870e2e7f20')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username_email'), $this->get('security.user_checker'), 'main', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('539b13b9ce57d')), true);
 
         $instance->setEventDispatcher($this->get('debug.event_dispatcher'));
 
@@ -8262,7 +8302,7 @@ class appDevDebugProjectContainer extends Container
             'kernel.root_dir' => 'C:/wamp/www/fenneck-site/app',
             'kernel.environment' => 'dev',
             'kernel.debug' => true,
-            'kernel.name' => 'app',
+            'kernel.name' => 'ap_',
             'kernel.cache_dir' => 'C:/wamp/www/fenneck-site/app/cache/dev',
             'kernel.logs_dir' => 'C:/wamp/www/fenneck-site/app/logs',
             'kernel.bundles' => array(
@@ -8311,7 +8351,7 @@ class appDevDebugProjectContainer extends Container
             'mailer_host' => '127.0.0.1',
             'mailer_user' => NULL,
             'mailer_password' => NULL,
-            'locale' => 'en',
+            'locale' => 'fr',
             'secret' => 'ThisTokenIsNotSoSecretChangeIt',
             'debug_toolbar' => true,
             'debug_redirects' => false,
@@ -8381,7 +8421,7 @@ class appDevDebugProjectContainer extends Container
             'kernel.trusted_proxies' => array(
 
             ),
-            'kernel.default_locale' => 'en',
+            'kernel.default_locale' => 'fr',
             'session.class' => 'Symfony\\Component\\HttpFoundation\\Session\\Session',
             'session.flashbag.class' => 'Symfony\\Component\\HttpFoundation\\Session\\Flash\\FlashBag',
             'session.attribute_bag.class' => 'Symfony\\Component\\HttpFoundation\\Session\\Attribute\\AttributeBag',

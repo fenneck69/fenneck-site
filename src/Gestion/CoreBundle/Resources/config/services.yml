@@ -28,6 +28,11 @@ services:
         arguments: [~, Gestion\CoreBundle\Entity\Membre, GestionCoreBundle:MembreAdmin]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Remboursements, label: Membres}
+   gestion_core.admin.gallerie:
+          class: Gestion\CoreBundle\Admin\GallerieAdmin
+          arguments: [~, Gestion\CoreBundle\Entity\Gallerie, GestionCoreBundle:GallerieAdmin]
+          tags:
+              - {name: sonata.admin, manager_type: orm, group: Remboursements, label: Galleries}
    gestion_core.admin.membre_type:
         class: Gestion\CoreBundle\Admin\MembreTypeAdmin
         arguments: [~, Gestion\CoreBundle\Entity\MembreType, GestionCoreBundle:MembreTypeAdmin]

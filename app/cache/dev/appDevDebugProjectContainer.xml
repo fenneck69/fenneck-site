@@ -4,7 +4,7 @@
     <parameter key="kernel.root_dir">C:/wamp/www/fenneck-site/app</parameter>
     <parameter key="kernel.environment">dev</parameter>
     <parameter key="kernel.debug">true</parameter>
-    <parameter key="kernel.name">app</parameter>
+    <parameter key="kernel.name">ap_</parameter>
     <parameter key="kernel.cache_dir">C:/wamp/www/fenneck-site/app/cache/dev</parameter>
     <parameter key="kernel.logs_dir">C:/wamp/www/fenneck-site/app/logs</parameter>
     <parameter key="kernel.bundles" type="collection">
@@ -53,7 +53,7 @@
     <parameter key="mailer_host">127.0.0.1</parameter>
     <parameter key="mailer_user">null</parameter>
     <parameter key="mailer_password">null</parameter>
-    <parameter key="locale">en</parameter>
+    <parameter key="locale">fr</parameter>
     <parameter key="secret">ThisTokenIsNotSoSecretChangeIt</parameter>
     <parameter key="debug_toolbar">true</parameter>
     <parameter key="debug_redirects">false</parameter>
@@ -119,7 +119,7 @@
     <parameter key="kernel.http_method_override">true</parameter>
     <parameter key="kernel.trusted_hosts" type="collection"/>
     <parameter key="kernel.trusted_proxies" type="collection"/>
-    <parameter key="kernel.default_locale">en</parameter>
+    <parameter key="kernel.default_locale">fr</parameter>
     <parameter key="session.class">Symfony\Component\HttpFoundation\Session\Session</parameter>
     <parameter key="session.flashbag.class">Symfony\Component\HttpFoundation\Session\Flash\FlashBag</parameter>
     <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag</parameter>
@@ -1154,7 +1154,7 @@
     </service>
     <service id="locale_listener" class="Symfony\Component\HttpKernel\EventListener\LocaleListener">
       <tag name="kernel.event_subscriber"/>
-      <argument>en</argument>
+      <argument>fr</argument>
       <argument type="service" id="router" on-invalid="ignore"/>
       <argument type="service" id="request_stack"/>
     </service>
@@ -1314,7 +1314,7 @@
       </argument>
       <call method="setFallbackLocales">
         <argument type="collection">
-          <argument>en</argument>
+          <argument>fr</argument>
         </argument>
       </call>
       <call method="addResource">
@@ -2519,6 +2519,12 @@
       </call>
       <call method="addResource">
         <argument>xliff</argument>
+        <argument>C:/wamp/www/fenneck-site/app/Resources/SonataAdminBundle/translations\SonataAdminBundle.fr.xliff</argument>
+        <argument>fr</argument>
+        <argument>SonataAdminBundle</argument>
+      </call>
+      <call method="addResource">
+        <argument>xliff</argument>
         <argument>C:\wamp\www\fenneck-site\vendor\sonata-project\core-bundle/Resources/translations\SonataCoreBundle.bg.xliff</argument>
         <argument>bg</argument>
         <argument>SonataCoreBundle</argument>
@@ -2822,6 +2828,24 @@
         <argument>C:\wamp\www\fenneck-site\src\Gestion\CoreBundle/Resources/translations\messages.fr.xlf</argument>
         <argument>fr</argument>
         <argument>messages</argument>
+      </call>
+      <call method="addResource">
+        <argument>xliff</argument>
+        <argument>C:/wamp/www/fenneck-site/app/Resources/translations\SonataAdminBundle.fr.xliff</argument>
+        <argument>fr</argument>
+        <argument>SonataAdminBundle</argument>
+      </call>
+      <call method="addResource">
+        <argument>xliff</argument>
+        <argument>C:/wamp/www/fenneck-site/app/Resources/translations\SonataUserBundle.fr.xliff</argument>
+        <argument>fr</argument>
+        <argument>SonataUserBundle</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>C:/wamp/www/fenneck-site/app/Resources/translations\ThraceMediaBundle.fr.xlf</argument>
+        <argument>fr</argument>
+        <argument>ThraceMediaBundle</argument>
       </call>
     </service>
     <service id="translation.loader.php" class="Symfony\Component\Translation\Loader\PhpFileLoader">
@@ -3882,7 +3906,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>539870e2e7f20</argument>
+            <argument>539b13b9ce57d</argument>
           </service>
         </argument>
       </argument>
@@ -4206,7 +4230,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>539870e2e7f20</argument>
+            <argument>539b13b9ce57d</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>
@@ -5985,6 +6009,7 @@
           <argument>gestion_core.admin.activite_type</argument>
           <argument>gestion_core.admin.famille</argument>
           <argument>gestion_core.admin.membre</argument>
+          <argument>gestion_core.admin.gallerie</argument>
           <argument>gestion_core.admin.membre_type</argument>
           <argument>gestion_core.admin.quotient</argument>
           <argument>gestion_core.admin.remboursement</argument>
@@ -6023,6 +6048,7 @@
             <argument key="items" type="collection">
               <argument>gestion_core.admin.famille</argument>
               <argument>gestion_core.admin.membre</argument>
+              <argument>gestion_core.admin.gallerie</argument>
               <argument>gestion_core.admin.remboursement</argument>
             </argument>
           </argument>
@@ -6051,6 +6077,9 @@
           <argument key="Gestion\CoreBundle\Entity\Membre" type="collection">
             <argument>gestion_core.admin.membre</argument>
           </argument>
+          <argument key="Gestion\CoreBundle\Entity\Gallerie" type="collection">
+            <argument>gestion_core.admin.gallerie</argument>
+          </argument>
           <argument key="Gestion\CoreBundle\Entity\MembreType" type="collection">
             <argument>gestion_core.admin.membre_type</argument>
           </argument>
@@ -6074,6 +6103,7 @@
         <argument>gestion_core.admin.activite_type</argument>
         <argument>gestion_core.admin.famille</argument>
         <argument>gestion_core.admin.membre</argument>
+        <argument>gestion_core.admin.gallerie</argument>
         <argument>gestion_core.admin.membre_type</argument>
         <argument>gestion_core.admin.quotient</argument>
         <argument>gestion_core.admin.remboursement</argument>
@@ -6331,7 +6361,7 @@
     </service>
     <service id="sonata.intl.locale_detector.request" class="Sonata\IntlBundle\Locale\RequestDetector">
       <argument type="service" id="service_container" strict="false"/>
-      <argument>en</argument>
+      <argument>fr</argument>
     </service>
     <service id="sonata.intl.templating.helper.locale" class="Sonata\IntlBundle\Templating\Helper\LocaleHelper">
       <tag name="templating.helper" alias="locale"/>
@@ -6777,7 +6807,7 @@
     <service id="vincet.bootstrapform.form.type.datepicker" class="VinceT\BootstrapFormBundle\Form\Type\DatePickerType">
       <tag name="form.type" alias="bootstrap_datepicker"/>
       <call method="setLocale">
-        <argument>en</argument>
+        <argument>fr</argument>
       </call>
     </service>
     <service id="vincet.bootstrapform.form.type.timepicker" class="VinceT\BootstrapFormBundle\Form\Type\TimePickerType">
@@ -7382,6 +7412,132 @@
       </call>
       <call method="setLabel">
         <argument>Membres</argument>
+      </call>
+      <call method="setPersistFilters">
+        <argument>false</argument>
+      </call>
+      <call method="setTemplates">
+        <argument type="collection">
+          <argument key="user_block">SonataUserBundle:Admin/Core:user_block.html.twig</argument>
+          <argument key="add_block">SonataAdminBundle:Core:add_block.html.twig</argument>
+          <argument key="layout">::standard_layout.html.twig</argument>
+          <argument key="ajax">SonataAdminBundle::ajax_layout.html.twig</argument>
+          <argument key="dashboard">SonataAdminBundle:Core:dashboard.html.twig</argument>
+          <argument key="list">SonataAdminBundle:CRUD:list.html.twig</argument>
+          <argument key="filter">SonataAdminBundle:Form:filter_admin_fields.html.twig</argument>
+          <argument key="show">SonataAdminBundle:CRUD:show.html.twig</argument>
+          <argument key="edit">SonataAdminBundle:CRUD:edit.html.twig</argument>
+          <argument key="history">SonataAdminBundle:CRUD:history.html.twig</argument>
+          <argument key="history_revision_timestamp">SonataIntlBundle:CRUD:history_revision_timestamp.html.twig</argument>
+          <argument key="acl">SonataAdminBundle:CRUD:acl.html.twig</argument>
+          <argument key="action">SonataAdminBundle:CRUD:action.html.twig</argument>
+          <argument key="short_object_description">SonataAdminBundle:Helper:short-object-description.html.twig</argument>
+          <argument key="preview">SonataAdminBundle:CRUD:preview.html.twig</argument>
+          <argument key="list_block">SonataAdminBundle:Block:block_admin_list.html.twig</argument>
+          <argument key="delete">SonataAdminBundle:CRUD:delete.html.twig</argument>
+          <argument key="batch">SonataAdminBundle:CRUD:list__batch.html.twig</argument>
+          <argument key="select">SonataAdminBundle:CRUD:list__select.html.twig</argument>
+          <argument key="batch_confirmation">SonataAdminBundle:CRUD:batch_confirmation.html.twig</argument>
+          <argument key="inner_list_row">SonataAdminBundle:CRUD:list_inner_row.html.twig</argument>
+          <argument key="base_list_field">SonataAdminBundle:CRUD:base_list_field.html.twig</argument>
+          <argument key="pager_links">SonataAdminBundle:Pager:links.html.twig</argument>
+          <argument key="pager_results">SonataAdminBundle:Pager:results.html.twig</argument>
+          <argument key="search">SonataAdminBundle:Core:search.html.twig</argument>
+          <argument key="search_result_block">SonataAdminBundle:Block:block_search_result.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setSecurityInformation">
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
+      </call>
+      <call method="initialize"/>
+      <call method="addExtension">
+        <argument type="service" id="mr_green_stuff_acl_sonata_admin_extension.acl.extension"/>
+      </call>
+    </service>
+    <service id="gestion_core.admin.gallerie" class="Gestion\CoreBundle\Admin\GallerieAdmin" scope="prototype">
+      <tag name="sonata.admin" manager_type="orm" group="Remboursements" label="Galleries"/>
+      <argument>gestion_core.admin.gallerie</argument>
+      <argument>Gestion\CoreBundle\Entity\Gallerie</argument>
+      <argument>GestionCoreBundle:GallerieAdmin</argument>
+      <call method="setFormTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setFilterTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setManagerType">
+        <argument>orm</argument>
+      </call>
+      <call method="setModelManager">
+        <argument type="service" id="sonata.admin.manager.orm"/>
+      </call>
+      <call method="setFormContractor">
+        <argument type="service" id="sonata.admin.builder.orm_form"/>
+      </call>
+      <call method="setShowBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_show"/>
+      </call>
+      <call method="setListBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_list"/>
+      </call>
+      <call method="setDatagridBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_datagrid"/>
+      </call>
+      <call method="setTranslator">
+        <argument type="service" id="translator.default"/>
+      </call>
+      <call method="setConfigurationPool">
+        <argument type="service" id="sonata.admin.pool"/>
+      </call>
+      <call method="setRouteGenerator">
+        <argument type="service" id="sonata.admin.route.default_generator"/>
+      </call>
+      <call method="setValidator">
+        <argument type="service" id="validator"/>
+      </call>
+      <call method="setSecurityHandler">
+        <argument type="service" id="sonata.admin.security.handler"/>
+      </call>
+      <call method="setMenuFactory">
+        <argument type="service" id="knp_menu.factory"/>
+      </call>
+      <call method="setRouteBuilder">
+        <argument type="service" id="sonata.admin.route.path_info"/>
+      </call>
+      <call method="setLabelTranslatorStrategy">
+        <argument type="service" id="sonata.admin.label.strategy.native"/>
+      </call>
+      <call method="setLabel">
+        <argument>Galleries</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
